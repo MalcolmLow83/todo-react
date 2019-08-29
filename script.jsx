@@ -9,9 +9,17 @@ class List extends React.Component {
   }
 
   addItem(){
-    this.state.list.push(this.state.word);
-    let currentList = this.state.list;
-    this.setState({list:currentList});
+    console.log("item length: "+this.state.word.length); //check item length
+
+    if (this.state.word.length <=1) {
+        alert("items must be more than 1 character");
+    } else if (this.state.word.length >15) {
+        alert("items cannot be more than 15 characters");
+    } else {
+        this.state.list.push(this.state.word);
+        let currentList = this.state.list;
+        this.setState({list:currentList});
+    }
   }
 
   removeItem(index){
@@ -51,6 +59,9 @@ class List extends React.Component {
 }
 
 ReactDOM.render(
-    <List/>,
+    <div className="container">
+        <h3>React To-do-List</h3>
+        <List/>
+    </div>,
     document.getElementById('root')
 );
