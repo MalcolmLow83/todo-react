@@ -4,21 +4,26 @@ class List extends React.Component {
 
     this.state = {
       word:"",
-      list : []
+      list : [],
+      userMessage: "Welcome",
     }
   }
 
   addItem(){
-    console.log("item length: "+this.state.word.length); //check item length
-
     if (this.state.word.length <=1) {
-        alert("items must be more than 1 character");
+        // alert("items must be more than 1 character");
+        let currentMessage = "items must be more than 1 character";
+        this.setState({userMessage:currentMessage});
     } else if (this.state.word.length >15) {
-        alert("items cannot be more than 15 characters");
+        // alert("items cannot be more than 15 characters");
+        let currentMessage = "items cannot be more than 15 characters";
+        this.setState({userMessage:currentMessage});
     } else {
         this.state.list.push(this.state.word);
         let currentList = this.state.list;
         this.setState({list:currentList});
+        let currentMessage = "item successfully added";
+        this.setState({userMessage:currentMessage});
     }
   }
 
@@ -50,6 +55,7 @@ class List extends React.Component {
       console.log("rendering");
       return (
         <div className="list">
+            <h5>{this.state.userMessage}</h5>
             <input onChange={()=>{this.changeHandler()}} value={this.state.word}/>
             <button onClick={()=>{this.addItem()}}>add item</button>
             {itemsElements}
