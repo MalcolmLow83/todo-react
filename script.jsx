@@ -1,3 +1,28 @@
+// class Form extends React.Component {
+//     constructor(){
+//         super()
+//         this.state ={
+//             word:"",
+//             userMessage: "Welcome"
+//         }
+//     }
+
+//     userInput(){
+//         console.log("Typed: "+event.target.value); //broswer typed value
+//     }
+
+//     render(){
+//         return(
+//             <div className="form">
+//             <h5>{this.state.userMessage}</h5>
+//             <input onChange={()=>{this.userInput()}} value={this.state.word}/>
+//             <button className="btn btn-dark" onClick={()=>{this.addItem()}}>add item</button>
+//             {itemsElements}
+//         </div>
+//         );
+//     }
+// };
+
 class List extends React.Component {
   constructor(){
     super()
@@ -20,12 +45,14 @@ class List extends React.Component {
         let currentDate = moment().format('DD MM YYYY, h:mm a')
         let currentList = this.state.list;
         let currentMessage = "item successfully added";
+        let clearWord = "";
         currentList.push({
             word:currentWord,
             date:currentDate
         });
         this.setState({list:currentList});
         this.setState({userMessage:currentMessage});
+        this.setState({word:clearWord});
     }
   }
 
@@ -43,6 +70,7 @@ class List extends React.Component {
 
   render() {
     // render the list with a map() here
+
     let itemsElements = this.state.list.map((item,index) => {
         return (
             <div className="itemCard">
@@ -59,10 +87,11 @@ class List extends React.Component {
 
       console.log("rendering");
       return (
-        <div className="list">
+        <div className="form">
             <h5>{this.state.userMessage}</h5>
             <input onChange={()=>{this.changeHandler()}} value={this.state.word}/>
-            <button onClick={()=>{this.addItem()}}>add item</button>
+            <button className="btn btn-dark" onClick={()=>{this.addItem()}}>add item</button>
+            <p>Item Count: {this.state.list.length}</p>
             {itemsElements}
         </div>
       );
