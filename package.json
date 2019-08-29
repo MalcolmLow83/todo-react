@@ -9,6 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.11.1"
-  }
+    "http-server": "^0.11.1",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MalcolmLow83/todo-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MalcolmLow83/todo-react/issues"
+  },
+  "homepage": "https://github.com/MalcolmLow83/todo-react#readme"
 }
