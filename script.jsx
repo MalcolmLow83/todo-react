@@ -10,10 +10,14 @@ class List extends React.Component {
 
   addItem(){
     this.state.list.push(this.state.word);
-    console.log("wordArraya: "+this.state.word);
     let currentList = this.state.list;
     this.setState({list:currentList});
-    console.log("wordArrayb: "+this.state.list);
+  }
+
+  removeItem(index){
+    this.state.list.splice(index, 1);
+    let currentList = this.state.list;
+    this.setState({list:currentList});
   }
 
   changeHandler(){
@@ -25,7 +29,14 @@ class List extends React.Component {
   render() {
       // render the list with a map() here
       let itemsElements = this.state.list.map((item,index) => {
-        return <li key={index}>{item}</li>
+        return (
+            <div>
+                <ul>
+                    <li key={index+"1"}>{item}</li>
+                    <button key={index} onClick={()=>{this.removeItem(index)}} >remove item</button>
+                </ul>
+            </div>
+        );
       });
 
       console.log("rendering");
@@ -33,9 +44,7 @@ class List extends React.Component {
         <div className="list">
             <input onChange={()=>{this.changeHandler()}} value={this.state.word}/>
             <button onClick={()=>{this.addItem()}}>add item</button>
-            <ul>
-                {itemsElements}
-            </ul>
+            {itemsElements}
         </div>
       );
   }
