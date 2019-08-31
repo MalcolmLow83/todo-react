@@ -7,21 +7,18 @@ class Form extends React.Component {
     }
 
     changeHandler(event){
-      console.log("Typed: "+event.target.value); //broswer typed value
       this.setState({taskz:event.target.value}); //set state on the word array to show on broswer
     };
 
     lengthHandler(event){
-      console.log("lengthHandler");
+      // console.log("lengthHandler ok");
       if (this.state.taskz.length <=1) {
-        let currentMessage = "task must be more than 1 character";
-          this.setState({userMessage:currentMessage});
+        this.setState({userMessage:"task must be more than 1 character"});
       } else if (this.state.taskz.length >15){
-          let currentMessage = "task cannot be more than 15 characters";
-          this.setState({userMessage:currentMessage});
+        this.setState({userMessage:"task cannot be more than 15 characters"});
       } else {
-        console.log("event: ", event.target.value);
         this.props.setTaskz(event.target.value);
+        this.setState({taskz:""});
       }
     }   
 
@@ -37,29 +34,21 @@ class Form extends React.Component {
 };
 
 class List extends React.Component {
-  constructor(){
-    super()
-    this.state = {
-      word:"",
-      list : [],
-    }
-  }
 
-  removeItem(index){
-    let currentList = this.state.list;
-    currentList.splice(index, 1);
-    this.setState({list:currentList});
+  doneTask(index){
+    this.props.setDoneTaskz(index);
   }
 
   render() {
-    let itemsElements = this.state.list.map((toDoItem,index) => {
+    // console.log("list render ok");
+    let listElements = this.props.listz.map((taskz,index) => {
         return (
-            <div className="itemCard">
+            <div className="taskCard">
                 <ul>
                     <li>
-                        <p key={index+1}>{toDoItem.word}</p>
-                        <p>Posted on: {toDoItem.date}</p>
-                        <button key={index} onClick={()=>{this.removeItem(index)}}>remove item</button>
+                        <p key={index+1}>{taskz.task}</p>
+                        <p>Posted on: {taskz.timeStamp}</p>
+                        <button key={index} onClick={()=>{this.doneTask(index)}}>task done</button>
                     </li>
                 </ul>
             </div>
@@ -68,38 +57,57 @@ class List extends React.Component {
 
     return (
       <div className="form">
-          <p>Item Count: {this.state.list.length}</p>
-          {itemsElements}
+          <p>list component</p>
+          <p>Item Count: {this.props.listz.length}</p>
+          {listElements}
       </div>
     );
   }
 }
+
+class DoneList extends React.Component{
+  render() {
+    return (<p>done list</p>);
+  }
+}
+
 
 class ToDoApp extends React.Component{
   constructor(){
     super()
     this.state = {
       list: [],
-      completedList: [],
+      doneList: [],
     }
     this.setTask = this.setTask.bind(this);
-    
+    this.setDoneTask = this.setDoneTask.bind(this);
   }
   
   setTask(taskz){
-    console.log("setItem value: ", taskz);
+    // console.log("setItem value: ", taskz);
     this.state.list.push({
       task: taskz,
       timeStamp: moment().format('DD MM YYYY, h:mm a')
     });
     this.setState({list:this.state.list});
+    console.log("list: ", this.state.list);
+  }
+
+  setDoneTask(indexz){
+    // console.log("setDoneTask: ", indexz);
+    this.state.doneList.push(this.state.list[indexz]);
+    this.setState({doneList:this.state.doneList});
+    this.state.list.splice(indexz, 1);  
+    this.setState({list:this.state.list});
+    console.log("doneList: ", this.state.doneList);
   }
   
   render() {
     return (
       <div>
         <Form setTaskz={this.setTask} taskz={this.state.task}/>
-        <List/>
+        <List listz={this.state.list} setDoneTaskz={this.setDoneTask} indexz={this.state.index}/>
+        <DoneList />
       </div>
     );
   };
