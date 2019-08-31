@@ -1,27 +1,40 @@
-// class Form extends React.Component {
-//     constructor(){
-//         super()
-//         this.state ={
-//             word:"",
-//             userMessage: "Welcome"
-//         }
-//     }
+class Form extends React.Component {
+    constructor(){
+        super()
+        this.state ={
+            userMessage: "Welcome"
+        }
+    }
 
-//     userInput(){
-//         console.log("Typed: "+event.target.value); //broswer typed value
-//     }
+    changeHandler(event){
+      console.log("Typed: "+event.target.value); //broswer typed value
+      this.setState({taskz:event.target.value}); //set state on the word array to show on broswer
+    };
 
-//     render(){
-//         return(
-//             <div className="form">
-//             <h5>{this.state.userMessage}</h5>
-//             <input onChange={()=>{this.userInput()}} value={this.state.word}/>
-//             <button className="btn btn-dark" onClick={()=>{this.addItem()}}>add item</button>
-//             {itemsElements}
-//         </div>
-//         );
-//     }
-// };
+    lengthHandler(event){
+      console.log("lengthHandler");
+      if (this.state.taskz.length <=1) {
+        let currentMessage = "task must be more than 1 character";
+          this.setState({userMessage:currentMessage});
+      } else if (this.state.taskz.length >15){
+          let currentMessage = "task cannot be more than 15 characters";
+          this.setState({userMessage:currentMessage});
+      } else {
+        console.log("event: ", event.target.value);
+        this.props.setTaskz(event.target.value);
+      }
+    }   
+
+    render(){
+        return(
+            <div className="form">
+            <h5>{this.state.userMessage}</h5>
+            <input onChange={(event)=>{this.changeHandler(event)}} value={this.state.taskz}/>     
+            <button className="btn btn-dark" onClick={(event)=>{this.lengthHandler(event)}} value={this.state.taskz}>add item</button>
+        </div>
+        );
+    }
+};
 
 class List extends React.Component {
   constructor(){
@@ -29,30 +42,6 @@ class List extends React.Component {
     this.state = {
       word:"",
       list : [],
-      userMessage: "Welcome",
-    }
-  }
-
-  addItem(){
-    if (this.state.word.length <=1) {
-        let currentMessage = "items must be more than 1 character";
-        this.setState({userMessage:currentMessage});
-    } else if (this.state.word.length >15) {
-        let currentMessage = "items cannot be more than 15 characters";
-        this.setState({userMessage:currentMessage});
-    } else {
-        let currentWord = this.state.word;
-        let currentDate = moment().format('DD MM YYYY, h:mm a')
-        let currentList = this.state.list;
-        let currentMessage = "item successfully added";
-        let clearWord = "";
-        currentList.push({
-            word:currentWord,
-            date:currentDate
-        });
-        this.setState({list:currentList});
-        this.setState({userMessage:currentMessage});
-        this.setState({word:clearWord});
     }
   }
 
@@ -62,22 +51,14 @@ class List extends React.Component {
     this.setState({list:currentList});
   }
 
-  changeHandler(){
-    console.log("Typed: "+event.target.value); //broswer typed value
-    let currentWord = event.target.value; //pass the typed value into currentWord
-    this.setState({word:currentWord}); //set state on the word array to show on broswer
-  }
-
   render() {
-    // render the list with a map() here
-
-    let itemsElements = this.state.list.map((item,index) => {
+    let itemsElements = this.state.list.map((toDoItem,index) => {
         return (
             <div className="itemCard">
                 <ul>
                     <li>
-                        <p key={index+1}>{item.word}</p>
-                        <p>Posted on: {item.date}</p>
+                        <p key={index+1}>{toDoItem.word}</p>
+                        <p>Posted on: {toDoItem.date}</p>
                         <button key={index} onClick={()=>{this.removeItem(index)}}>remove item</button>
                     </li>
                 </ul>
@@ -85,23 +66,63 @@ class List extends React.Component {
         );
     });
 
-      console.log("rendering");
-      return (
-        <div className="form">
-            <h5>{this.state.userMessage}</h5>
-            <input onChange={()=>{this.changeHandler()}} value={this.state.word}/>
-            <button className="btn btn-dark" onClick={()=>{this.addItem()}}>add item</button>
-            <p>Item Count: {this.state.list.length}</p>
-            {itemsElements}
-        </div>
-      );
+    return (
+      <div className="form">
+          <p>Item Count: {this.state.list.length}</p>
+          {itemsElements}
+      </div>
+    );
   }
+}
+
+class ToDoApp extends React.Component{
+  constructor(){
+    super()
+    this.state = {
+      list: [],
+      completedList: [],
+    }
+    this.setTask = this.setTask.bind(this);
+    
+  }
+  
+  setTask(taskz){
+    console.log("setItem value: ", taskz);
+    this.state.list.push({
+      task: taskz,
+      timeStamp: moment().format('DD MM YYYY, h:mm a')
+    });
+    this.setState({list:this.state.list});
+  }
+  
+  render() {
+    return (
+      <div>
+        <Form setTaskz={this.setTask} taskz={this.state.task}/>
+        <List/>
+      </div>
+    );
+  };
 }
 
 ReactDOM.render(
     <div className="container">
         <h3>React To-do-List</h3>
-        <List/>
+        <ToDoApp />
     </div>,
     document.getElementById('root')
 );
+
+
+//     let currentWord = this.state.word;
+      //     let currentDate = moment().format('DD MM YYYY, h:mm a')          
+      //     let currentList = this.state.list;
+      //     let currentMessage = "item successfully added";
+      //     let clearWord = "";
+      //     currentList.push({
+      //         word:currentWord,
+      //         date:currentDate
+      //     });
+      //     this.setState({list:currentList});
+      //     this.setState({userMessage:currentMessage});
+      //     this.setState({word:clearWord});
