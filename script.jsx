@@ -26,7 +26,7 @@ class Form extends React.Component {
         <div className="form">
         <h5>{this.state.userMessage}</h5>
         <input onChange={(event)=>{this.changeHandler(event)}} value={this.state.taskz}/>     
-        <button className="btn btn-dark" onClick={(event)=>{this.lengthHandler(event)}} value={this.state.taskz}>add item</button>
+        <button className="btn btn-dark" onClick={(event)=>{this.lengthHandler(event)}} value={this.state.taskz}>add task</button>
     </div>
     );
   }
@@ -53,7 +53,7 @@ class List extends React.Component {
       );
     });
     return (
-      <div className="form">
+      <div className="list">
           <p>Pending Tasks</p>
           <p>Item Count: {this.props.listz.length}</p>
           {listElements}
@@ -84,7 +84,7 @@ class DoneList extends React.Component{
       );
     });
     return (
-      <div>
+      <div className="doneList">
         <p>Completed Tasks</p>
         {doneListElements}
       </div>

@@ -1,4 +1,14 @@
-.itemCard {
+.form {
+	border: 2px solid red;
+	border-radius: 10px;
+}
+
+.list {
 	border: 2px solid black;
+	border-radius: 10px;
+}
+
+.doneList {
+	border: 2px solid green;
 	border-radius: 10px;
 }
